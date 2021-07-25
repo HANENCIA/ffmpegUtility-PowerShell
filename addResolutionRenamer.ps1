@@ -3,23 +3,13 @@
 
 $path = $PSCommandPath | Split-Path -Parent
 
-# .avi
-foreach ($FILENAME in Get-ChildItem -Path $path -Filter "*.avi") {
-    Write-Output "Working: $FILENAME"
-    $width, $height = ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of default=nw=1:nk=1 $path"\"$FILENAME
-    $FILENAME | Rename-Item -NewName {$_.basename + " (" + $width + $([char]0x00D7) + $height + ").avi"}
-}
+$extensionArray = "avi", "mkv", "mp4", "flv"
 
-# .mkv
-foreach ($FILENAME in Get-ChildItem -Path $path -Filter "*.mkv") {
-    Write-Output "Working: $FILENAME"
-    $width, $height = ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of default=nw=1:nk=1 $path"\"$FILENAME
-    $FILENAME | Rename-Item -NewName {$_.basename + " (" + $width + $([char]0x00D7) + $height + ").mkv"}
-}
-
-# .mp4
-foreach ($FILENAME in Get-ChildItem -Path $path -Filter "*.mp4") {
-    Write-Output "Working: $FILENAME"
-    $width, $height = ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of default=nw=1:nk=1 $path"\"$FILENAME
-    $FILENAME | Rename-Item -NewName {$_.basename + " (" + $width + $([char]0x00D7) + $height + ").mp4"}
+foreach ($extension in $extensionArray)
+{
+    foreach ($FILENAME in Get-ChildItem -Path $path -Filter "*.$extension") {
+        Write-Output "Working: $FILENAME"
+        $width, $height = ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of default=nw=1:nk=1 $path"\"$FILENAME
+        $FILENAME | Rename-Item -NewName {$_.basename + " (" + $width + $([char]0x00D7) + $height + ")." + $extension}
+    }
 }
