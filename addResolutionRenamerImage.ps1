@@ -1,9 +1,9 @@
-# addResolutionRenamer.ps1
+# addResolutionRenamerImage.ps1
 # FFmpeg: 2021-03-09-git-c35e456f54-full_build-www.gyan.dev
 
 $path = $PSCommandPath | Split-Path -Parent
 
-$extensionArray = "avi", "mkv", "mp4", "flv"
+$extensionArray = "jpg", "png"
 
 foreach ($extension in $extensionArray)
 {
